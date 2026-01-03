@@ -1,20 +1,17 @@
-# Python
-__pycache__/
-venv/
-*.pyc
-
-# Data lourde
+# Datasets (medical data)
 Malaria cell images/
 Malaria cell images.zip
 data/
 results/
 test_images/
 
-# Notebooks
-notebooks/
+# Python
+__pycache__/
+*.pyc
+venv/
 
-# Logs
-*.log
+# Models (keep ONLY exported medical model if needed)
+models/*.keras
 
 # OS
 .DS_Store

@@ -1,33 +1,57 @@
 # app/main.py
-from fastapi import FastAPI, File, UploadFile
-from PIL import Image
-from app.model import predict_cell
 
-app = FastAPI(
-    title="Malaria Detection API",
-    version="2.0-medical",
-    description="API médicale stable pour la détection du paludisme"
+from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import JSONResponse
+import shutil
+import os
+
+from app.predict import MalariaPredictor
+
+app = FastAPI()
+
+# =========================
+# LOAD MODEL (AU DEMARRAGE)
+# =========================
+predictor = MalariaPredictor(
+    malaria_model_path="models/malaria_model.tflite",
+    validator_model_path="models/validator_model.keras"
 )
 
+UPLOAD_DIR = "temp"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
+
+# =========================
+# ROUTE TEST
+# =========================
 @app.get("/")
-def read_root():
-    return {
-        "message": "Malaria Detection API v2 - Medical Stable",
-        "threshold": 0.35,
-        "model": "malaria_model_med_v2.tflite"
-    }
+def home():
+    return {"message": "Malaria AI API is running"}
 
 
+# =========================
+# ROUTE PREDICT
+# =========================
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
-    """
-    Upload an image and get the prediction:
+    try:
+        # 📥 Sauvegarde temporaire
+        file_path = os.path.join(UPLOAD_DIR, file.filename)
 
-    - "Cellule infectee" or "Cellule saine"
-    - Confidence %
-    """
-    # Lire l'image uploadée
-    image = Image.open(file.file)
-    prediction = predict_cell(image)  # utilise le seuil défini dans model.py
-    return prediction
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        # 🧠 Prediction
+        result = predictor.predict(file_path)
+
+        # 🧹 Nettoyage
+        os.remove(file_path)
+
+        return JSONResponse(content=result)
+
+    except Exception as e:
+        return JSONResponse(
+            content={"status": "error", "message": str(e)},
+            status_code=500
+        )
+

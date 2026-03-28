@@ -64,3 +64,5 @@ def predict_cell(image: Image.Image, threshold: float = MEDICAL_THRESHOLD):
         "raw_score": round(float(prediction), 4),
         "model_version": MODEL_VERSION
     }
+
+

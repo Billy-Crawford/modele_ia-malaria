@@ -1,0 +1,52 @@
+.
+├── analyze_errors.py
+├── app
+│   ├── main.py
+│   ├── model.py
+│   ├── predict.py
+│   ├── schemas.py
+│   ├── test_api_batch.py
+│   ├── test_api.py
+│   ├── test_predict.py
+│   └── utils.py
+├── data
+│   ├── processed
+│   ├── raw
+│   │   └── cell_images
+│   ├── splits
+│   │   ├── test
+│   │   ├── train
+│   │   └── val
+│   └── validator_dataset
+│       ├── not_blood_smear
+│       ├── train
+│       └── val
+├── download_cifar10.py
+├── evaluate_model.py
+├── evaluate_model_v2.py
+├── export_tflite_med_v2.py
+├── Malaria cell images
+│   ├── cell_images
+│   │   ├── Parasitized
+│   │   └── Uninfected
+│   └── cell_images.zip
+├── Malaria cell images.zip
+├── models
+│   ├── malaria_cnn_model.keras
+│   ├── malaria_cnn_model_med_v2.keras
+│   ├── malaria_model_med_v2.tflite
+│   └── malaria_model.tflite
+├── notebooks
+│   └── 01_exploration_dataset..ipynb
+├── prepare_blood_smear_dataset.py
+├── results
+│   └── faux_negatifs
+├── resume
+│   └── medical_ai_scenarios.txt
+├── src
+├── structure.txt
+├── test_api_batch.py
+├── test_images
+└── train_with_medical_augmentation.py
+
+25 directories, 25 files
